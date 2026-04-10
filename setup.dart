@@ -461,7 +461,7 @@ class BuildCommand extends Command {
 
     if (Platform.isWindows) {
       coreSha256 = await Build.calcSha256(corePaths.first);
-      await Build.buildHelper(target, coreSha256);
+      //await Build.buildHelper(target, coreSha256);
     }
     await _buildEnvFile(env, coreSha256: coreSha256);
     if (out != 'app') {

@@ -45,20 +45,28 @@ class UaItem extends ConsumerWidget {
     final globalUa = ref.watch(
       patchClashConfigProvider.select((state) => state.globalUa),
     );
-    return ListItem<String?>.options(
+    return ListItem.input(
       leading: const Icon(Icons.computer_outlined),
       title: const Text('UA'),
       subtitle: Text(globalUa ?? appLocalizations.defaultText),
-      delegate: OptionsDelegate<String?>(
+      delegate: InputDelegate(
+        resetValue: '',
         title: 'UA',
-        options: [null, 'clash-verge/v2.4.2', 'ClashforWindows/0.19.23'],
-        value: globalUa,
-        onChanged: (value) {
+        value: globalUa ?? '',
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return appLocalizations.emptyTip('UA');
+          }
+          return null;
+        },
+        onChanged: (String? value) {
+          if (value == null) {
+            return;
+          }
           ref
               .read(patchClashConfigProvider.notifier)
               .update((state) => state.copyWith(globalUa: value));
         },
-        textBuilder: (ua) => ua ?? appLocalizations.defaultText,
       ),
     );
   }
